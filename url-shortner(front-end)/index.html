@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="node_modules/font-awesome/css/font-awesome.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="sign-in-modal-container" id="sign-in-modal">
+      <div class="sign-in-modal">
+        <div class="sign-in-modal-header">
+          <div class="sign-in-modal-title">Sign in</div>
+          <div class="sign-in-modal-sub-title">Already have an account?</div>
+        </div>
+        <div class="sign-in-modal-content">
+          <div class="sign-in-email-container">
+            <input
+              type="text"
+              placeholder="email@domian.com"
+              id="sign-in-email"
+            />
+          </div>
+          <div class="sign-in-password">
+            <input
+              type="password"
+              placeholder="password"
+              id="sign-in-password"
+            />
+          </div>
+          <div class="login-btn-container">
+            <button id="login-btn" class="login-btn">Sign in</button>
+          </div>
+        </div>
+        <div class="container-forgot-password">
+          <div class="forgot-password-link" id="btn-forgot-password">
+            Forgot password?
+            <div>Get it back</div>
+          </div>
+        </div>
+        <div class="container-sign-up">
+          <div class="sign-up-link" id="sign-up-link">
+            Sign Up
+            <div>Create new account</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sign-up-modal-container" id="sign-up-modal">
+      <div class="sign-up-modal">
+        <div class="sign-up-modal-header">
+          <div class="sign-up-modal-title">Sign up</div>
+          <div class="sign-up-modal-sub-title">Create new user account?</div>
+        </div>
+        <div class="sign-up-modal-content">
+          <div class="sign-up-email-container">
+            <input
+              type="text"
+              placeholder="email@domian.com"
+              id="sign-up-email"
+            />
+          </div>
+          <div class="sign-up-password">
+            <input
+              type="password"
+              placeholder="password"
+              id="sign-up-password"
+            />
+          </div>
+          <div class="sign-up-confirm-password">
+            <input
+              type="password"
+              placeholder="confirm password"
+              id="sign-up-confirm-password"
+            />
+          </div>
+          <div class="sign-up-btn-container">
+            <button id="sign-up-btn" class="sign-up-btn">Sign up</button>
+          </div>
+        </div>
+        <div class="sign-in-container">
+          <div class="sign-in-link" id="sign-in-link">
+            Already have an account? Sign in
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="forgot-password-container" id="forgot-password">
+      <div class="forgot-password">
+        <div class="forgot-password-header">
+          <div class="forgot-password-title">Forgot Password?</div>
+          <div class="forgot-password-sub-title">
+            Enter email and retrieve password
+          </div>
+        </div>
+        <div class="forgot-password-content">
+          <div class="forgot-password-email-container">
+            <input
+              type="email"
+              placeholder="email@domian.com"
+              id="forgot-password-email"
+              required
+            />
+          </div>
+          <div class="retreive-password-btn-container">
+            <button id="retreive-password-btn" class="retreive-password-btn">
+              Retrieve password
+            </button>
+          </div>
+        </div>
+        <div class="sign-in-container">
+          <div class="sign-in-link" id="sign-in">
+            Sign in
+            <div>Aready have account?</div>
+          </div>
+        </div>
+        <div class="container-sign-up">
+          <div class="sign-up-link" id="sign-up">
+            Sign Up
+            <div>Create new account</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-header">
+      <div class="container-navbar">
+        <div class="navbar">
+          <div class="navbar-brand">Url Shortner</div>
+          <!-- <div class="login-handler" id="login-handler">
+            <div class="navbar-sign-in" id="sign-in">Login</div>
+            <div class="navbar-sign-up" id="sign-up">Signup</div>
+          </div> -->
+          <div class="logout-handler" id="logout-handler">
+            <div class="sign-in-user" id="sign-in-user"></div>
+            <div class="sign-out-btn" id="sign-out-btn">Sign out</div>
+          </div>
+        </div>
+      </div>
+      <div class="container-info">
+        <div class="container-title">Shorten your url</div>
+        <div class="container-sub-title">
+          Scroll Down to see your shorten Urls in the table....
+        </div>
+      </div>
+      <div class="conatiner-search-bar">
+        <input
+          type="text"
+          id="shrink-text"
+          placeholder="Paste a link to shorten it.."
+        />
+        <button class="shrink-btn" id="shortenUrl">Shrink</button>
+      </div>
+    </div>
+    <div class="container-table-of-contents" id="table-of-contents">
+      <div class="table-of-contents-title">Url Details</div>
+      <div class="table-contents" id="table-contents"></div>
+    </div>
+    <script src="dist/index.js" async defer></script>
+  </body>
+</html>
