@@ -456,8 +456,11 @@ let checkIsUserLoggedIn = async () => {
 
             if (userjson.data) {
                 document.getElementById('sign-in-user').innerHTML = userjson.data.email;
+                document.getElementById('logout-handler').style.display = 'flex';
                 displayUrlDetails();
             } else {
+                showModal('sign-in-modal');
+                document.getElementById('logout-handler').style.display = 'none';
             }
         } else {
             showModal('sign-in-modal');
