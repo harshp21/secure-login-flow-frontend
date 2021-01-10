@@ -198,17 +198,20 @@ setEventListner('shortenUrl', 'click', () => {
     shortenUrl();
 })
 
+// on click show sign in modal
 setEventListner('sign-in-link', 'click', () => {
     closeModal('sign-up-modal');
     closeModal('forgot-password');
     showModal('sign-in-modal');
 })
+
 setEventListner('sign-in', 'click', () => {
     closeModal('sign-up-modal');
     closeModal('forgot-password');
     showModal('sign-in-modal');
 })
 
+//on click show sign up modal
 setEventListner('sign-up-link', 'click', () => {
     closeModal('forgot-password');
     closeModal('sign-in-modal');
@@ -220,22 +223,12 @@ setEventListner('sign-up', 'click', () => {
     showModal('sign-up-modal');
 })
 
-// setEventListner('sign-in-modal-close-btn', 'click', () => {
-//     closeModal('sign-in-modal');
-// })
-
-// setEventListner('sign-up-modal-close-btn', 'click', () => {
-//     closeModal('sign-up-modal');
-// })
-
-// setEventListner('forgot-password-close-btn', 'click', () => {
-//     closeModal('forgot-password');
-// })
-
+// login the user with provided credentials
 setEventListner('login-btn', 'click', () => {
     signInUser();
 })
 
+//sign out the user 
 setEventListner('sign-out-btn', 'click', () => {
     createConfirmationModal('Are you sure you want to sign out?', 'Sign out', () => {
         localStorage.removeItem('jwt-token');
@@ -245,19 +238,23 @@ setEventListner('sign-out-btn', 'click', () => {
     });
 })
 
+// create sign up btn to register user
 setEventListner('sign-up-btn', 'click', () => {
     signUpUser();
 })
 
+//retrieve btn to retrieve the password
 setEventListner('retreive-password-btn', 'click', () => {
     retrievePassword();
 })
 
+//forgot btn to get forgot password modal
 setEventListner('btn-forgot-password', 'click', () => {
     closeModal('sign-in-modal');
     showModal('forgot-password');
 })
 
+//create confirmation modal
 let createConfirmationModal = (msg: string, title: string, cb: Function) => {
     let confirmationModalContainer = document.createElement('div');
     confirmationModalContainer.classList.add('confirmation-modal-container');
@@ -298,14 +295,17 @@ let createConfirmationModal = (msg: string, title: string, cb: Function) => {
 
 }
 
+//show modal
 let showModal = (id: string): void => {
     document.getElementById(id).style.display = 'flex';
 }
 
+// close modal
 let closeModal = (id: string): void => {
     document.getElementById(id).style.display = 'none';
 }
 
+//register user
 let signUpUser = async () => {
     try {
         let email = (<HTMLInputElement>document.getElementById('sign-up-email')).value;
@@ -351,11 +351,12 @@ let signUpUser = async () => {
         }
 
     } catch (err) {
-
+        console.log(err);
     }
 
 }
 
+//sign in user 
 let signInUser = async () => {
     try {
         let email = (<HTMLInputElement>document.getElementById('sign-in-email')).value;
@@ -402,6 +403,7 @@ let signInUser = async () => {
     }
 }
 
+//make a retrieve password call
 let retrievePassword = async () => {
     try {
         let email = (<HTMLInputElement>document.getElementById('forgot-password-email')).value;
@@ -438,6 +440,7 @@ let retrievePassword = async () => {
 
 createLoader();
 
+//check user logged in
 let checkIsUserLoggedIn = async () => {
     try {
         if (localStorage.getItem('jwt-token') != null) {
