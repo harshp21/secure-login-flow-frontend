@@ -262,6 +262,7 @@ function setEventListner(id, eventType, cb) {
 setEventListner('shortenUrl', 'click', function () {
     shortenUrl();
 });
+// on click show sign in modal
 setEventListner('sign-in-link', 'click', function () {
     closeModal('sign-up-modal');
     closeModal('forgot-password');
@@ -272,6 +273,7 @@ setEventListner('sign-in', 'click', function () {
     closeModal('forgot-password');
     showModal('sign-in-modal');
 });
+//on click show sign up modal
 setEventListner('sign-up-link', 'click', function () {
     closeModal('forgot-password');
     closeModal('sign-in-modal');
@@ -282,18 +284,11 @@ setEventListner('sign-up', 'click', function () {
     closeModal('sign-in-modal');
     showModal('sign-up-modal');
 });
-// setEventListner('sign-in-modal-close-btn', 'click', () => {
-//     closeModal('sign-in-modal');
-// })
-// setEventListner('sign-up-modal-close-btn', 'click', () => {
-//     closeModal('sign-up-modal');
-// })
-// setEventListner('forgot-password-close-btn', 'click', () => {
-//     closeModal('forgot-password');
-// })
+// login the user with provided credentials
 setEventListner('login-btn', 'click', function () {
     signInUser();
 });
+//sign out the user 
 setEventListner('sign-out-btn', 'click', function () {
     createConfirmationModal('Are you sure you want to sign out?', 'Sign out', function () {
         localStorage.removeItem('jwt-token');
@@ -302,16 +297,20 @@ setEventListner('sign-out-btn', 'click', function () {
         showModal('sign-in-modal');
     });
 });
+// create sign up btn to register user
 setEventListner('sign-up-btn', 'click', function () {
     signUpUser();
 });
+//retrieve btn to retrieve the password
 setEventListner('retreive-password-btn', 'click', function () {
     retrievePassword();
 });
+//forgot btn to get forgot password modal
 setEventListner('btn-forgot-password', 'click', function () {
     closeModal('sign-in-modal');
     showModal('forgot-password');
 });
+//create confirmation modal
 var createConfirmationModal = function (msg, title, cb) {
     var confirmationModalContainer = document.createElement('div');
     confirmationModalContainer.classList.add('confirmation-modal-container');
@@ -343,12 +342,15 @@ var createConfirmationModal = function (msg, title, cb) {
     confirmationModalContainer.append(confirmationModalContent);
     document.body.append(confirmationModalContainer);
 };
+//show modal
 var showModal = function (id) {
     document.getElementById(id).style.display = 'flex';
 };
+// close modal
 var closeModal = function (id) {
     document.getElementById(id).style.display = 'none';
 };
+//register user
 var signUpUser = function () { return __awaiter(void 0, void 0, void 0, function () {
     var email, password, confirmPassword, mailFormat, user, userJson, err_4;
     return __generator(this, function (_a) {
@@ -403,11 +405,13 @@ var signUpUser = function () { return __awaiter(void 0, void 0, void 0, function
             case 6: return [3 /*break*/, 8];
             case 7:
                 err_4 = _a.sent();
+                console.log(err_4);
                 return [3 /*break*/, 8];
             case 8: return [2 /*return*/];
         }
     });
 }); };
+//sign in user 
 var signInUser = function () { return __awaiter(void 0, void 0, void 0, function () {
     var email, password, mailFormat, user, userJson, err_5;
     return __generator(this, function (_a) {
@@ -466,6 +470,7 @@ var signInUser = function () { return __awaiter(void 0, void 0, void 0, function
         }
     });
 }); };
+//make a retrieve password call
 var retrievePassword = function () { return __awaiter(void 0, void 0, void 0, function () {
     var email, mailFormat, user, userJson, err_6;
     return __generator(this, function (_a) {
@@ -509,6 +514,7 @@ var retrievePassword = function () { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 createLoader();
+//check user logged in
 var checkIsUserLoggedIn = function () { return __awaiter(void 0, void 0, void 0, function () {
     var user, userjson, err_7;
     return __generator(this, function (_a) {
@@ -532,9 +538,12 @@ var checkIsUserLoggedIn = function () { return __awaiter(void 0, void 0, void 0,
                 userjson = _a.sent();
                 if (userjson.data) {
                     document.getElementById('sign-in-user').innerHTML = userjson.data.email;
+                    document.getElementById('logout-handler').style.display = 'flex';
                     displayUrlDetails();
                 }
                 else {
+                    showModal('sign-in-modal');
+                    document.getElementById('logout-handler').style.display = 'none';
                 }
                 return [3 /*break*/, 4];
             case 3:
