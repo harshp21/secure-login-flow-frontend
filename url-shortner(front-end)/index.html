@@ -67,6 +67,16 @@
               id="sign-up-email"
             />
           </div>
+          <div class="sign-up-first-name">
+            <input
+              type="text"
+              placeholder="First name"
+              id="sign-up-first-name"
+            />
+          </div>
+          <div class="sign-up-last-name">
+            <input type="text" placeholder="Last name" id="sign-up-last-name" />
+          </div>
           <div class="sign-up-password">
             <input
               type="password"
@@ -133,10 +143,6 @@
       <div class="container-navbar">
         <div class="navbar">
           <div class="navbar-brand">Url Shortner</div>
-          <!-- <div class="login-handler" id="login-handler">
-            <div class="navbar-sign-in" id="sign-in">Login</div>
-            <div class="navbar-sign-up" id="sign-up">Signup</div>
-          </div> -->
           <div class="logout-handler" id="logout-handler">
             <div class="sign-in-user" id="sign-in-user"></div>
             <div class="sign-out-btn" id="sign-out-btn">Sign out</div>
@@ -162,6 +168,29 @@
       <div class="table-of-contents-title">Url Details</div>
       <div class="table-contents" id="table-contents"></div>
     </div>
+    <div class="chart-section" id="chart-section">
+      <div class="chart-btn-container">
+        <div class="month-data-btn" id="month-data-btn">Show current year</div>
+        <div class="days-data-btn" id="days-data-btn">Show current month</div>
+      </div>
+      <div class="chart-container">
+        <div class="chart-container-year" id="year-chart">
+          <canvas id="current-year-chart"></canvas>
+        </div>
+        <div class="chart-container-month" id="month-chart">
+          <canvas id="current-month-chart"></canvas>
+        </div>
+        <div class="pie-chart-container" id="pie-chart-container">
+          <canvas id="pie-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="node_modules/chart.js/dist/Chart.bundle.js"
+      async
+      defer
+    ></script>
     <script src="dist/index.js" async defer></script>
   </body>
 </html>
