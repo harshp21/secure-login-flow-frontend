@@ -395,7 +395,9 @@ body {
 .sign-up-email-container,
 .sign-up-password,
 .sign-up-confirm-password,
-.forgot-password-email-container {
+.forgot-password-email-container,
+.sign-up-first-name,
+.sign-up-last-name {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -413,7 +415,9 @@ body {
 .sign-up-email-container input,
 .sign-up-password input,
 .sign-up-confirm-password input,
-.forgot-password-email-container input {
+.forgot-password-email-container input,
+.sign-up-last-name input,
+.sign-up-first-name input {
   height: 25px;
   width: 80%;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -584,6 +588,78 @@ body {
   cursor: pointer;
 }
 
-#table-of-contents {
+#table-of-contents,
+.logout-handler {
+  display: none;
+}
+
+#myChart {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.chart-container {
+  width: auto;
+  height: 400px;
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+}
+
+.chart-container-year,
+.chart-container-month {
+  width: 50%;
+  float: left;
+}
+
+.chart-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.month-data-btn,
+.days-data-btn {
+  padding: 20px;
+  margin-right: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #e94545;
+  cursor: pointer;
+  color: #fff;
+}
+
+.month-data-btn:hover,
+.days-data-btn:hover {
+  background: #b64242;
+}
+
+.month-data-btn,
+.days-data-btn {
+  padding: 20px;
+  margin-right: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #e94545;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 5px;
+}
+
+#month-chart {
+  display: none;
+}
+#pie-chart {
+  display: block;
+  height: 245px;
+  width: 450px;
+}
+
+.pie-chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#chart-section {
   display: none;
 }
