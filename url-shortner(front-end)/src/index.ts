@@ -1,5 +1,7 @@
 import { UrlDetails } from './interfaces/url-details.interface';
 import { ResponseJson } from './interfaces/response-json.interface';
+import Chart from 'chart.js';
+
 let apiUrl: string = 'https://secure-login-url-shortner.herokuapp.com';
 
 // fetch all url details to display in table
@@ -29,6 +31,7 @@ let displayUrlDetails = async () => {
     let urlDetailsJson = await fetchAllUrlDetails();
     hideLoader();
     createDomForUrlDetails(urlDetailsJson);
+    createChart(urlDetailsJson.data);
 }
 
 // fetch the redirect url and redirect in a new tab
@@ -231,6 +234,7 @@ setEventListner('login-btn', 'click', () => {
 //sign out the user 
 setEventListner('sign-out-btn', 'click', () => {
     createConfirmationModal('Are you sure you want to sign out?', 'Sign out', () => {
+        location.href = window.location.href.split('?')[0];
         localStorage.removeItem('jwt-token');
         document.getElementById('logout-handler').style.display = 'none';
         document.getElementById('table-of-contents').style.display = 'none'
@@ -311,6 +315,8 @@ let signUpUser = async () => {
         let email = (<HTMLInputElement>document.getElementById('sign-up-email')).value;
         let password = (<HTMLInputElement>document.getElementById('sign-up-password')).value;
         let confirmPassword = (<HTMLInputElement>document.getElementById('sign-up-confirm-password')).value;
+        let firstName = (<HTMLInputElement>document.getElementById('sign-up-first-name')).value;
+        let lastName = (<HTMLInputElement>document.getElementById('sign-up-last-name')).value;
 
         let mailFormat = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -330,6 +336,8 @@ let signUpUser = async () => {
                 // Adding body or contents to send 
                 body: JSON.stringify({
                     email,
+                    firstName,
+                    lastName,
                     password
                 }),
 
@@ -386,8 +394,8 @@ let signInUser = async () => {
             let userJson = await user.json();
             if (userJson.data) {
                 localStorage.setItem('jwt-token', userJson.token);
-                await displayUrlDetails();
                 closeModal('sign-in-modal');
+                await displayUrlDetails();
                 document.getElementById('sign-in-user').innerHTML = userJson.data.email;
                 document.getElementById('logout-handler').style.display = 'block';
             } else {
@@ -443,7 +451,14 @@ createLoader();
 //check user logged in
 let checkIsUserLoggedIn = async () => {
     try {
+        const windowUrl = new URL(window.location.href);
+        const token = windowUrl.searchParams.get("token");
+        const isAccountActivationRedirect = token !== null;
+        if (isAccountActivationRedirect) {
+            localStorage.setItem('jwt-token', token);
+        }
         if (localStorage.getItem('jwt-token') != null) {
+            showLoader();
             let user = await fetch(`${apiUrl}/ping`, {
 
                 // Adding method type 
@@ -460,15 +475,25 @@ let checkIsUserLoggedIn = async () => {
             if (userjson.data) {
                 document.getElementById('sign-in-user').innerHTML = userjson.data.email;
                 document.getElementById('logout-handler').style.display = 'flex';
-                displayUrlDetails();
+                showLoader();
+                await displayUrlDetails();
+                hideLoader();
+                if (isAccountActivationRedirect) {
+                    displayMsgModal('Account activated successfully');
+                }
             } else {
+                // displayMsgModal(userjson.data);
                 showModal('sign-in-modal');
                 document.getElementById('logout-handler').style.display = 'none';
+                document.getElementById('chart-section').style.display = 'none';
+
             }
         } else {
             showModal('sign-in-modal');
             document.getElementById('logout-handler').style.display = 'none';
+            document.getElementById('chart-section').style.display = 'none';
         }
+        hideLoader();
     } catch (err) {
         console.log(err);
     }
@@ -523,3 +548,123 @@ let resetPassword = async () => {
         console.log(err);
     }
 }
+
+let createChart = (urlDetails) => {
+
+    let monthWiseData = [];
+    let currentMonthsData = [];
+    let days = [];
+    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'Octomber', 'November', 'December'];
+    let urlAndRedirectData = {
+        url: 0,
+        redirect: 0
+    };
+    document.getElementById('chart-section').style.display = 'block';
+    let todayDate = new Date();
+    urlDetails.forEach((url: UrlDetails, index: number) => {
+        let date = new Date(url.date);
+        monthWiseData[date.getMonth()] ? monthWiseData[date.getMonth()]++ : monthWiseData[date.getMonth()] = 1;
+        if (todayDate.getMonth() === date.getMonth()) {
+            currentMonthsData[date.getDate()] ? currentMonthsData[date.getDate()]++ : currentMonthsData[date.getDate()] = 1;
+        }
+        urlAndRedirectData['url'] = index + 1;
+        urlAndRedirectData['redirect'] += url.clicks;
+    });
+    let daysInMonth = getDaysInMonth(todayDate.getMonth(), todayDate.getFullYear());
+
+    for (let i = 0; i < daysInMonth; i++) {
+        if (!currentMonthsData[i]) {
+            currentMonthsData[i] = 0;
+        }
+        days.push(i + 1);
+    }
+
+    months.forEach((month, index) => {
+        if (!monthWiseData[index]) {
+            monthWiseData[index] = 0;
+        }
+    })
+    console.log(monthWiseData);
+
+    createGraph('Current Year Data', months, monthWiseData, 'current-year-chart');
+    createGraph('Current Month Data', days, currentMonthsData, 'current-month-chart');
+
+    console.group(urlAndRedirectData)
+
+    createPeiChart(['Url Shorten', 'Redirected From Urls'], [urlAndRedirectData['url'], urlAndRedirectData['redirect']], 'pie-chart');
+}
+
+let createGraph = (label, xAxisLabel, data, id) => {
+    var ctx = (<HTMLCanvasElement>document.getElementById(id)).getContext('2d');
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'line',
+
+        // The data for our dataset
+        data: {
+            labels: xAxisLabel,
+            datasets: [{
+                label: label,
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: data,
+                showLine: true
+            }]
+        },
+
+        // Configuration options go here
+        options: {
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 10
+                    }
+                }]
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        // This more specific font property overrides the global property
+                        font: {
+                            size: 25
+                        }
+                    }
+                }
+            }
+        }
+
+    });
+}
+
+let createPeiChart = (labels, data, id) => {
+    let canvas = <HTMLCanvasElement>document.getElementById(id);
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: data,
+                backgroundColor: ["#ef4f4f", "#ffd56b"],
+            }],
+
+            // These labels appear in the legend and in the tooltips when hovering different arcs
+            labels: labels
+        }
+        // options: options
+    });
+}
+
+let getDaysInMonth = function (month, year) {
+    return new Date(year, month, 0).getDate();
+}
+
+setEventListner('month-data-btn', 'click', () => {
+    document.getElementById('year-chart').style.display = 'block';
+    document.getElementById('month-chart').style.display = 'none';
+})
+setEventListner('days-data-btn', 'click', () => {
+    document.getElementById('year-chart').style.display = 'none';
+    document.getElementById('month-chart').style.display = 'block';
+})
+
